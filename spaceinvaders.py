@@ -9,6 +9,18 @@ pygame.mixer.init()
 pygame.mixer.pre_init(44100, 16, 2, 4096)
 
 
+# set up logger config
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
+formatter = logging.Formatter('%(levelname)s: %(asctime)s: %(name)s: %(message)s')
+
+fileHandler = logging.FileHandler('main.log')
+fileHandler.setFormatter(formatter)
+
+logger.addHandler(fileHandler)
+
+
 # VARIABLES
 FPS = 120
 WIDTH, HEIGHT = 750, 600
@@ -147,6 +159,8 @@ def draw_window(player, enemy_1, enemy_2, enemy_3, enemy_4, enemy_5, enemy_6, en
     if COUNTDOWN == 0:
             win_text = WIN_FONT.render('YOU WON!', 1, WHITE)
             win_text2 = WIN_FONT.render(f'SCORE: {score}', 1, WHITE)
+
+            logger.debug(f"User won, score {score}")
 
             WIN.blit(win_text, (WIDTH//2-150, HEIGHT/2-70))
             WIN.blit(win_text2, (WIDTH//2-135, HEIGHT/2+5))
@@ -699,6 +713,8 @@ def main(DIFFICULTY_INDEX):
         if got_hit > 0 :
             win_text3 = WIN_FONT.render('YOU LOST!', 1, WHITE)
             win_text4 = WIN_FONT.render(f'SCORE: {score}', 1, WHITE)
+
+            logger.debug(f"User lost, score {score}")
 
             WIN.blit(win_text3, (WIDTH//2-165, HEIGHT/2-70))
             WIN.blit(win_text4, (WIDTH//2-135, HEIGHT/2+5))
